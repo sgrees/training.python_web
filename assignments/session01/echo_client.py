@@ -24,11 +24,14 @@ def client(msg, log_buffer=sys.stderr):
         #       of 16-byte chunks. Accumulate the chunks you get to build the
         #       entire reply from the server. Make sure that you have received
         #       the entire message and then you can break the loop.
-        data = sock.recv(16)
         #       Log each chunk you receive.  Use the print statement below to
         #       do it. This will help in debugging problems
-        chunk = ''
-        print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
+        done = False
+        while not done:
+            chunk = sock.recv(16)
+            print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
+            if len(chunk) < 16:
+                done = True
     finally:
         # TODO: after you break out of the loop receiving echoed chunks from
         #       the server you will want to close your client socket.
@@ -37,7 +40,7 @@ def client(msg, log_buffer=sys.stderr):
 
         # TODO: when all is said and done, you should return the entire reply
         # you received from the server as the return value of this function.
-        print('Received', repr(data))
+        print('Received', repr(received_message))
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
