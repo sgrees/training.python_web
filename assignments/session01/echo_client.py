@@ -2,6 +2,7 @@ import socket
 import sys
 
 
+
 def client(msg, log_buffer=sys.stderr):
     server_address = ('localhost', 10000)
     # TODO: Replace the following line with your code which will instantiate
@@ -13,7 +14,7 @@ def client(msg, log_buffer=sys.stderr):
     # you can use this variable to accumulate the entire message received back
     # from the server
     received_message = ''
-
+    buffsize = 16
     # this try/finally block exists purely to allow us to close the socket
     # when we are finished with it
     try:
@@ -28,9 +29,10 @@ def client(msg, log_buffer=sys.stderr):
         #       do it. This will help in debugging problems
         done = False
         while not done:
-            chunk = sock.recv(16)
+            chunk = sock.recv(buffsize)
             print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
-            if len(chunk) < 16:
+            received_message += chunk.decode('utf8')
+            if len(chunk) < buffsize:
                 done = True
     finally:
         # TODO: after you break out of the loop receiving echoed chunks from
