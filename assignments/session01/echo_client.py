@@ -20,7 +20,7 @@ def client(msg, log_buffer=sys.stderr):
     try:
         print('sending "{0}"'.format(msg), file=log_buffer)
         # TODO: send your message to the server here.
-        sock.sendall(b'This tornado loves you')
+        sock.sendall(msg.encode('utf8'))
         # TODO: the server should be sending you back your message as a series
         #       of 16-byte chunks. Accumulate the chunks you get to build the
         #       entire reply from the server. Make sure that you have received
@@ -43,6 +43,7 @@ def client(msg, log_buffer=sys.stderr):
         # TODO: when all is said and done, you should return the entire reply
         # you received from the server as the return value of this function.
         print('Received', repr(received_message))
+        return received_message
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
